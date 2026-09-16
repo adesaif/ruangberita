@@ -9,19 +9,19 @@ export default function Logo() {
         alt="Ruang Berita"
         width={36}
         height={36}
-        className="h-9 w-9 rounded-lg"
+        className="h-8 w-8 rounded-lg sm:h-9 sm:w-9"
         priority
       />
-      <span className="hidden sm:block">
+      <span className="block">
         <Image
           src="/logo-wordmark.png"
           alt="RUANG BERITA"
           width={139}
           height={35}
-          className="h-6 w-auto"
+          className="h-5 w-auto sm:h-6"
           priority
         />
-        <span className="block text-[10px] uppercase tracking-widest text-ink-muted">
+        <span className="block whitespace-nowrap text-[8px] uppercase tracking-widest text-ink-muted sm:text-[10px]">
           Dinamis · Aktual · Kredibel
         </span>
       </span>

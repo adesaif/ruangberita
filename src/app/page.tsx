@@ -25,13 +25,13 @@ export default async function HomePage() {
       .eq("status", "published")
       .eq("is_popular", true)
       .order("published_at", { ascending: false })
-      .limit(4),
+      .limit(8),
     supabase
       .from("articles")
       .select(ARTICLE_SELECT)
       .eq("status", "published")
       .order("published_at", { ascending: false })
-      .limit(4),
+      .limit(8),
   ]);
 
   const heroArticles = (featured?.length ? featured : latest) as unknown as Article[];
