@@ -35,6 +35,7 @@ export default function HeaderBar({
 }) {
   const [searchOpen, setSearchOpen] = useState(false);
   const [q, setQ] = useState("");
+  const [openCategoryId, setOpenCategoryId] = useState<string | null>(null);
   const router = useRouter();
 
   function submitSearch(e: React.FormEvent) {
@@ -101,32 +102,79 @@ export default function HeaderBar({
 
         <nav className="mx-auto hidden max-w-6xl items-center gap-6 px-4 pb-3 md:flex">
           {categories.slice(0, 6).map((c) => {
-            const hasSubs = subcategories.some((s) => s.category_id === c.id);
+            const subs = subcategories.filter((s) => s.category_id === c.id);
+            const hasSubs = subs.length > 0;
+            const isOpen = openCategoryId === c.id;
             return (
-              <Link
-                key={c.id}
-                href={`/kategori/${c.slug}`}
-                className="inline-flex items-center gap-0.5 text-sm font-semibold text-ink-muted transition duration-200 hover:text-brand"
-              >
-                {c.name}
-                {hasSubs && (
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="h-3.5 w-3.5"
+              <div key={c.id} className="relative">
+                <div className="inline-flex items-center gap-0.5">
+                  <Link
+                    href={`/kategori/${c.slug}`}
+                    className="text-sm font-semibold text-ink-muted transition duration-200 hover:text-brand"
                   >
-                    <path d="m6 9 6 6 6-6" />
-                  </svg>
+                    {c.name}
+                  </Link>
+                  {hasSubs && (
+                    <button
+                      type="button"
+                      aria-label={`Buka subkategori ${c.name}`}
+                      aria-expanded={isOpen}
+                      onClick={() => setOpenCategoryId(isOpen ? null : c.id)}
+                      className="p-0.5 text-ink-muted transition duration-200 hover:text-brand"
+                    >
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth={2}
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className={`h-3.5 w-3.5 transition-transform duration-300 ease-out ${
+                          isOpen ? "rotate-180" : "rotate-0"
+                        }`}
+                      >
+                        <path d="m6 9 6 6 6-6" />
+                      </svg>
+                    </button>
+                  )}
+                </div>
+
+                {hasSubs && (
+                  <div
+                    className={`absolute left-0 top-full z-40 grid pt-2 transition-[grid-template-rows,opacity] duration-300 ease-out ${
+                      isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+                    }`}
+                  >
+                    <div className="overflow-hidden">
+                      <div className="flex min-w-[11rem] flex-col gap-0.5 rounded-xl border border-ink/10 bg-surface p-1.5 shadow-lg">
+                        {subs.map((s) => (
+                          <Link
+                            key={s.id}
+                            href={`/kategori/${c.slug}/${s.slug}`}
+                            onClick={() => setOpenCategoryId(null)}
+                            className="rounded-lg px-3 py-2 text-sm font-medium text-ink-muted transition duration-200 hover:bg-surface-alt hover:text-brand"
+                          >
+                            {s.name}
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
                 )}
-              </Link>
+              </div>
             );
           })}
         </nav>
       </div>
+
+      {openCategoryId && (
+        <button
+          type="button"
+          aria-label="Tutup dropdown"
+          onClick={() => setOpenCategoryId(null)}
+          className="fixed inset-0 z-30 cursor-default"
+        />
+      )}
 
       <MobileCategoryBar categories={categories} subcategories={subcategories} />
 
