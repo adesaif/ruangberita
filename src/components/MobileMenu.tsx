@@ -50,7 +50,7 @@ export default function MobileMenu({
             const isOpen = openCategoryId === c.id;
             return (
               <div key={c.id}>
-                <div className="flex items-center justify-between">
+                <div className="flex items-center">
                   <Link
                     href={`/kategori/${c.slug}`}
                     onClick={closeAll}
@@ -64,7 +64,7 @@ export default function MobileMenu({
                       aria-label={`Buka subkategori ${c.name}`}
                       aria-expanded={isOpen}
                       onClick={() => setOpenCategoryId(isOpen ? null : c.id)}
-                      className="px-2 py-3 text-ink-muted"
+                      className="py-3 pl-1.5 text-ink-muted"
                     >
                       <svg
                         viewBox="0 0 24 24"

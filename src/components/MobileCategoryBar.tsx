@@ -34,16 +34,16 @@ export default function MobileCategoryBar({
   if (pinned.length === 0) return null;
 
   return (
-    <nav className="flex items-stretch gap-1 border-t border-ink/10 px-2 py-1 md:hidden">
+    <nav className="flex items-stretch gap-1 px-2 pb-2.5 md:hidden">
       {pinned.map((c) => {
         const subs = subcategories.filter((s) => s.category_id === c.id);
         const isOpen = openId === c.id;
         return (
           <div key={c.id} className="relative flex-1">
-            <div className="flex items-center justify-center rounded-lg transition duration-200 hover:bg-surface-alt">
+            <div className="flex items-center justify-center gap-0.5 rounded-full bg-surface-alt/60 transition duration-200 hover:bg-surface-alt">
               <Link
                 href={`/kategori/${c.slug}`}
-                className="flex-1 truncate py-2.5 text-center text-[13px] font-medium text-ink transition duration-200"
+                className="flex-1 truncate py-2 pl-3 text-center text-[13px] font-semibold text-ink transition duration-200"
               >
                 {c.name}
               </Link>
@@ -53,7 +53,7 @@ export default function MobileCategoryBar({
                   aria-label={`Buka subkategori ${c.name}`}
                   aria-expanded={isOpen}
                   onClick={() => setOpenId(isOpen ? null : c.id)}
-                  className="px-1.5 py-2.5 text-ink-muted"
+                  className="py-2 pr-2.5 text-ink-muted"
                 >
                   <svg
                     viewBox="0 0 24 24"
