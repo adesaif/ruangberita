@@ -2,31 +2,22 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import NewsCard from "@/components/NewsCard";
 import { createClient } from "@/lib/supabase/server";
-import type { Article, Category, Subcategory } from "@/lib/types";
+import { getCategoryBySlug } from "@/lib/data";
+import type { Article, Subcategory } from "@/lib/types";
 
 export const revalidate = 60;
 
 export async function generateMetadata({ params }: { params: { slug: string } }) {
-  const supabase = createClient();
-  const { data: category } = await supabase
-    .from("categories")
-    .select("name")
-    .eq("slug", params.slug)
-    .single();
-
+  const category = await getCategoryBySlug(params.slug);
   return { title: category?.name ?? "Kategori" };
 }
 
 export default async function CategoryPage({ params }: { params: { slug: string } }) {
-  const supabase = createClient();
-
-  const { data: category } = await supabase
-    .from("categories")
-    .select("id, name, slug, sort_order")
-    .eq("slug", params.slug)
-    .single<Category>();
+  const category = await getCategoryBySlug(params.slug);
 
   if (!category) notFound();
+
+  const supabase = createClient();
 
   const [{ data: subcategories }, { data: articles }] = await Promise.all([
     supabase

@@ -2,19 +2,14 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import NewsGrid from "@/components/NewsGrid";
 import { createClient } from "@/lib/supabase/server";
+import { getArticleBySlug } from "@/lib/data";
 import type { Article } from "@/lib/types";
 import { formatDate } from "@/lib/utils";
 
 export const revalidate = 60;
 
 export async function generateMetadata({ params }: { params: { slug: string } }) {
-  const supabase = createClient();
-  const { data: article } = await supabase
-    .from("articles")
-    .select("title, excerpt, cover_image_url")
-    .eq("slug", params.slug)
-    .eq("status", "published")
-    .single();
+  const article = await getArticleBySlug(params.slug);
 
   if (!article) return { title: "Berita tidak ditemukan" };
 
@@ -30,18 +25,11 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 }
 
 export default async function ArticlePage({ params }: { params: { slug: string } }) {
-  const supabase = createClient();
-
-  const { data: article } = await supabase
-    .from("articles")
-    .select(
-      "id, title, slug, excerpt, content, cover_image_url, published_at, category_id, category:categories(id, name, slug)"
-    )
-    .eq("slug", params.slug)
-    .eq("status", "published")
-    .single<Article>();
+  const article = await getArticleBySlug(params.slug);
 
   if (!article) notFound();
+
+  const supabase = createClient();
 
   // fire-and-forget view counter (best-effort, tidak menahan render)
   void supabase.rpc("increment_view_count", { article_id: article.id }).then(
