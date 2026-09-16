@@ -7,8 +7,8 @@ export default function Logo() {
       <Image
         src="/logo-wordmark.png"
         alt="RUANG BERITA"
-        width={278}
-        height={70}
+        width={2067}
+        height={420}
         quality={100}
         unoptimized
         className="h-9 w-auto sm:h-10 md:h-11"
