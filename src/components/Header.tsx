@@ -31,6 +31,18 @@ export default function Header({ categories }: { categories: Category[] }) {
           <MobileMenu categories={categories} />
         </div>
       </div>
+
+      <nav className="flex gap-4 overflow-x-auto border-t border-ink/10 px-4 py-2 md:hidden [&::-webkit-scrollbar]:hidden">
+        {categories.map((c) => (
+          <Link
+            key={c.id}
+            href={`/kategori/${c.slug}`}
+            className="shrink-0 whitespace-nowrap text-sm font-medium text-ink-muted transition duration-200 hover:text-brand"
+          >
+            {c.name}
+          </Link>
+        ))}
+      </nav>
     </header>
   );
 }
