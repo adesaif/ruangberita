@@ -3,7 +3,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ThemeScript from "@/components/ThemeScript";
 import { createClient } from "@/lib/supabase/server";
-import type { Category } from "@/lib/types";
+import type { Category, Subcategory } from "@/lib/types";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -22,15 +22,24 @@ export const revalidate = 60;
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   let categories: Category[] = [];
+  let subcategories: Subcategory[] = [];
   try {
     const supabase = createClient();
-    const { data } = await supabase
-      .from("categories")
-      .select("id, name, slug, sort_order")
-      .order("sort_order", { ascending: true });
-    categories = data ?? [];
+    const [{ data: categoryData }, { data: subcategoryData }] = await Promise.all([
+      supabase
+        .from("categories")
+        .select("id, name, slug, sort_order")
+        .order("sort_order", { ascending: true }),
+      supabase
+        .from("subcategories")
+        .select("id, category_id, name, slug, sort_order")
+        .order("sort_order", { ascending: true }),
+    ]);
+    categories = categoryData ?? [];
+    subcategories = subcategoryData ?? [];
   } catch {
     categories = [];
+    subcategories = [];
   }
 
   return (
@@ -39,7 +48,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <ThemeScript />
       </head>
       <body className="min-h-screen antialiased">
-        <Header categories={categories} />
+        <Header categories={categories} subcategories={subcategories} />
         <main>{children}</main>
         <Footer categories={categories} />
       </body>

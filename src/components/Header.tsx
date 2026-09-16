@@ -2,10 +2,17 @@ import Link from "next/link";
 import Logo from "./Logo";
 import ThemeToggle from "./ThemeToggle";
 import MobileMenu from "./MobileMenu";
+import MobileCategoryBar from "./MobileCategoryBar";
 import SearchBar from "./SearchBar";
-import type { Category } from "@/lib/types";
+import type { Category, Subcategory } from "@/lib/types";
 
-export default function Header({ categories }: { categories: Category[] }) {
+export default function Header({
+  categories,
+  subcategories,
+}: {
+  categories: Category[];
+  subcategories: Subcategory[];
+}) {
   return (
     <header className="sticky top-0 z-50 border-b border-ink/10 bg-surface/90 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4">
@@ -28,21 +35,11 @@ export default function Header({ categories }: { categories: Category[] }) {
             <SearchBar compact />
           </div>
           <ThemeToggle />
-          <MobileMenu categories={categories} />
+          <MobileMenu categories={categories} subcategories={subcategories} />
         </div>
       </div>
 
-      <nav className="flex gap-4 overflow-x-auto border-t border-ink/10 px-4 py-2 md:hidden [&::-webkit-scrollbar]:hidden">
-        {categories.map((c) => (
-          <Link
-            key={c.id}
-            href={`/kategori/${c.slug}`}
-            className="shrink-0 whitespace-nowrap text-sm font-medium text-ink-muted transition duration-200 hover:text-brand"
-          >
-            {c.name}
-          </Link>
-        ))}
-      </nav>
+      <MobileCategoryBar categories={categories} subcategories={subcategories} />
     </header>
   );
 }
