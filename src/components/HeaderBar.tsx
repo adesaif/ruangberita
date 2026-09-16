@@ -58,7 +58,7 @@ export default function HeaderBar({
               aria-label="Cari berita"
               aria-expanded={searchOpen}
               onClick={() => setSearchOpen((v) => !v)}
-              className={`flex h-9 w-9 items-center justify-center rounded-full text-ink transition duration-200 hover:bg-surface-alt active:scale-95 ${
+              className={`flex h-9 w-9 items-center justify-center rounded-full border border-ink/10 text-ink transition duration-200 hover:bg-surface-alt active:scale-95 ${
                 searchOpen ? "bg-surface-alt text-brand" : ""
               }`}
             >
