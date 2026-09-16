@@ -102,8 +102,14 @@ export default function Footer({ categories }: { categories: Category[] }) {
         </div>
       </div>
 
-      <div className="border-t border-ink/10 px-4 py-4 text-center text-xs text-ink-muted">
-        © {new Date().getFullYear()} RUANG BERITA. Seluruh hak cipta dilindungi.
+      <div className="flex flex-col items-center gap-2 border-t border-ink/10 px-4 py-4 text-center text-xs text-ink-muted sm:flex-row sm:justify-between">
+        <span>© {new Date().getFullYear()} RUANG BERITA. Seluruh hak cipta dilindungi.</span>
+        <Link
+          href="/admin"
+          className="font-medium text-ink-muted underline-offset-2 transition duration-200 hover:text-brand hover:underline"
+        >
+          Dashboard Admin
+        </Link>
       </div>
     </footer>
   );

@@ -111,6 +111,9 @@ export default function MobileMenu({
           <Link href="/cari" onClick={closeAll} className="py-3 text-sm font-medium text-ink">
             Cari Berita
           </Link>
+          <Link href="/admin" onClick={closeAll} className="py-3 text-sm font-medium text-ink">
+            Dashboard Admin
+          </Link>
         </nav>
       </div>
     </div>
