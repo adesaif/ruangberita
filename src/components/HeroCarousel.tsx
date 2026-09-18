@@ -10,6 +10,7 @@ const AUTOPLAY_MS = 3000;
 
 export default function HeroCarousel({ articles }: { articles: Article[] }) {
   const [index, setIndex] = useState(0);
+  const [playing, setPlaying] = useState(true);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const goTo = useCallback(
@@ -18,30 +19,17 @@ export default function HeroCarousel({ articles }: { articles: Article[] }) {
   );
 
   useEffect(() => {
-    if (articles.length <= 1) return;
+    if (articles.length <= 1 || !playing) return;
     timerRef.current = setInterval(() => setIndex((i) => (i + 1) % articles.length), AUTOPLAY_MS);
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
-  }, [articles.length]);
-
-  function pause() {
-    if (timerRef.current) clearInterval(timerRef.current);
-  }
-  function resume() {
-    if (articles.length <= 1) return;
-    if (timerRef.current) clearInterval(timerRef.current);
-    timerRef.current = setInterval(() => setIndex((i) => (i + 1) % articles.length), AUTOPLAY_MS);
-  }
+  }, [articles.length, playing]);
 
   if (articles.length === 0) return null;
 
   return (
-    <section
-      className="group relative aspect-[16/9] w-full overflow-hidden rounded-2xl md:aspect-[21/9]"
-      onMouseEnter={pause}
-      onMouseLeave={resume}
-    >
+    <section className="group relative aspect-[16/9] w-full overflow-hidden rounded-2xl md:aspect-[21/9]">
       {articles.map((article, i) => (
         <Link
           key={article.id}
@@ -79,18 +67,39 @@ export default function HeroCarousel({ articles }: { articles: Article[] }) {
       ))}
 
       {articles.length > 1 && (
-        <div className="absolute bottom-4 right-4 z-20 flex gap-2 md:bottom-6 md:right-6">
-          {articles.map((_, i) => (
-            <button
-              key={i}
-              type="button"
-              aria-label={`Slide ${i + 1}`}
-              onClick={() => goTo(i)}
-              className={`h-1.5 rounded-full transition duration-200 ${
-                i === index ? "w-6 bg-white" : "w-1.5 bg-white/50"
-              }`}
-            />
-          ))}
+        <div className="absolute bottom-4 right-4 z-20 flex items-center gap-3 md:bottom-6 md:right-6">
+          <button
+            type="button"
+            aria-label={playing ? "Hentikan slide otomatis" : "Putar slide otomatis"}
+            aria-pressed={!playing}
+            onClick={() => setPlaying((p) => !p)}
+            className="flex h-6 w-6 items-center justify-center rounded-full bg-black/40 text-white transition duration-200 hover:bg-black/60"
+          >
+            {playing ? (
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor">
+                <rect x="6" y="4" width="4" height="16" rx="1" />
+                <rect x="14" y="4" width="4" height="16" rx="1" />
+              </svg>
+            ) : (
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M7 4.5v15l13-7.5-13-7.5Z" />
+              </svg>
+            )}
+          </button>
+
+          <div className="flex gap-2">
+            {articles.map((_, i) => (
+              <button
+                key={i}
+                type="button"
+                aria-label={`Slide ${i + 1}`}
+                onClick={() => goTo(i)}
+                className={`h-1.5 rounded-full transition duration-200 ${
+                  i === index ? "w-6 bg-white" : "w-1.5 bg-white/50"
+                }`}
+              />
+            ))}
+          </div>
         </div>
       )}
     </section>

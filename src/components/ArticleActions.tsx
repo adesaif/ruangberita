@@ -17,6 +17,8 @@ export default function ArticleActions({ articleId, slug, title, initialLikeCoun
   const [favorited, setFavorited] = useState(false);
   const [busy, setBusy] = useState(false);
   const [shareNotice, setShareNotice] = useState("");
+  const [likeBump, setLikeBump] = useState(0);
+  const [favBump, setFavBump] = useState(0);
 
   useEffect(() => {
     setFavorited(isFavorite(slug));
@@ -46,6 +48,7 @@ export default function ArticleActions({ articleId, slug, title, initialLikeCoun
     if (!liked) {
       setLiked(true);
       setLikeCount((c) => c + 1);
+      setLikeBump((b) => b + 1);
       const { error } = await supabase
         .from("article_likes")
         .insert({ article_id: articleId, visitor_id: visitorId });
@@ -72,6 +75,7 @@ export default function ArticleActions({ articleId, slug, title, initialLikeCoun
   function handleFavorite() {
     const next = toggleFavorite(slug);
     setFavorited(next);
+    if (next) setFavBump((b) => b + 1);
   }
 
   async function handleShare() {
@@ -115,12 +119,14 @@ export default function ArticleActions({ articleId, slug, title, initialLikeCoun
         }`}
       >
         <svg
+          key={likeBump}
           width="18"
           height="18"
           viewBox="0 0 24 24"
           fill={liked ? "currentColor" : "none"}
           stroke="currentColor"
           strokeWidth="2"
+          className={liked ? "animate-pop" : ""}
         >
           <path
             strokeLinecap="round"
@@ -155,12 +161,14 @@ export default function ArticleActions({ articleId, slug, title, initialLikeCoun
         }`}
       >
         <svg
+          key={favBump}
           width="18"
           height="18"
           viewBox="0 0 24 24"
           fill={favorited ? "currentColor" : "none"}
           stroke="currentColor"
           strokeWidth="2"
+          className={favorited ? "animate-pop" : ""}
         >
           <path strokeLinecap="round" strokeLinejoin="round" d="M6 3.75h12v17l-6-3.6-6 3.6v-17Z" />
         </svg>
