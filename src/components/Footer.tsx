@@ -73,7 +73,7 @@ export default function Footer({ categories }: { categories: Category[] }) {
         <div>
           <h3 className="mb-3 text-sm font-semibold text-ink">Kategori</h3>
           <ul className="flex flex-col gap-2">
-            {categories.slice(0, 6).map((c) => (
+            {categories.map((c) => (
               <li key={c.id}>
                 <Link
                   href={`/kategori/${c.slug}`}

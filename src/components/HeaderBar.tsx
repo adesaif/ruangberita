@@ -35,8 +35,12 @@ export default function HeaderBar({
 }) {
   const [searchOpen, setSearchOpen] = useState(false);
   const [q, setQ] = useState("");
-  const [openCategoryId, setOpenCategoryId] = useState<string | null>(null);
+  const [openMenu, setOpenMenu] = useState<string | null>(null);
   const router = useRouter();
+
+  const MAX_VISIBLE = 5;
+  const visibleCategories = categories.slice(0, MAX_VISIBLE);
+  const overflowCategories = categories.slice(MAX_VISIBLE);
 
   function submitSearch(e: React.FormEvent) {
     e.preventDefault();
@@ -101,10 +105,10 @@ export default function HeaderBar({
         </div>
 
         <nav className="mx-auto hidden max-w-6xl items-center gap-6 px-4 pb-3 md:flex">
-          {categories.slice(0, 6).map((c) => {
+          {visibleCategories.map((c) => {
             const subs = subcategories.filter((s) => s.category_id === c.id);
             const hasSubs = subs.length > 0;
-            const isOpen = openCategoryId === c.id;
+            const isOpen = openMenu === c.id;
             return (
               <div key={c.id} className="relative">
                 <div className="inline-flex items-center gap-0.5">
@@ -119,7 +123,7 @@ export default function HeaderBar({
                       type="button"
                       aria-label={`Buka subkategori ${c.name}`}
                       aria-expanded={isOpen}
-                      onClick={() => setOpenCategoryId(isOpen ? null : c.id)}
+                      onClick={() => setOpenMenu(isOpen ? null : c.id)}
                       className="p-0.5 text-ink-muted transition duration-200 hover:text-brand"
                     >
                       <svg
@@ -151,7 +155,7 @@ export default function HeaderBar({
                           <Link
                             key={s.id}
                             href={`/kategori/${c.slug}/${s.slug}`}
-                            onClick={() => setOpenCategoryId(null)}
+                            onClick={() => setOpenMenu(null)}
                             className="rounded-lg px-3 py-2 text-sm font-medium text-ink-muted transition duration-200 hover:bg-surface-alt hover:text-brand"
                           >
                             {s.name}
@@ -164,14 +168,62 @@ export default function HeaderBar({
               </div>
             );
           })}
+
+          {overflowCategories.length > 0 && (
+            <div className="relative">
+              <button
+                type="button"
+                aria-label="Kategori lainnya"
+                aria-expanded={openMenu === "more"}
+                onClick={() => setOpenMenu(openMenu === "more" ? null : "more")}
+                className="inline-flex items-center gap-0.5 text-sm font-semibold text-ink-muted transition duration-200 hover:text-brand"
+              >
+                Lainnya
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className={`h-3.5 w-3.5 transition-transform duration-300 ease-out ${
+                    openMenu === "more" ? "rotate-180" : "rotate-0"
+                  }`}
+                >
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
+              </button>
+
+              <div
+                className={`absolute left-0 top-full z-40 grid pt-2 transition-[grid-template-rows,opacity] duration-300 ease-out ${
+                  openMenu === "more" ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+                }`}
+              >
+                <div className="overflow-hidden">
+                  <div className="flex min-w-[11rem] flex-col gap-0.5 rounded-xl border border-ink/10 bg-surface p-1.5 shadow-lg">
+                    {overflowCategories.map((c) => (
+                      <Link
+                        key={c.id}
+                        href={`/kategori/${c.slug}`}
+                        onClick={() => setOpenMenu(null)}
+                        className="rounded-lg px-3 py-2 text-sm font-medium text-ink-muted transition duration-200 hover:bg-surface-alt hover:text-brand"
+                      >
+                        {c.name}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </nav>
       </div>
 
-      {openCategoryId && (
+      {openMenu && (
         <button
           type="button"
           aria-label="Tutup dropdown"
-          onClick={() => setOpenCategoryId(null)}
+          onClick={() => setOpenMenu(null)}
           className="fixed inset-0 z-30 cursor-default"
         />
       )}
