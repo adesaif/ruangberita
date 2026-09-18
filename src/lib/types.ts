@@ -30,9 +30,18 @@ export type Article = {
   is_featured: boolean;
   is_popular: boolean;
   view_count: number;
+  share_count: number;
   published_at: string | null;
   created_at: string;
   updated_at: string;
   category?: Category | null;
   subcategory?: Subcategory | null;
+};
+
+export type ArticleComment = {
+  id: string;
+  article_id: string;
+  name: string;
+  content: string;
+  created_at: string;
 };

@@ -1,9 +1,11 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import NewsGrid from "@/components/NewsGrid";
+import ArticleActions from "@/components/ArticleActions";
+import ArticleComments from "@/components/ArticleComments";
 import { createClient } from "@/lib/supabase/server";
 import { getArticleBySlug } from "@/lib/data";
-import type { Article } from "@/lib/types";
+import type { Article, ArticleComment } from "@/lib/types";
 import { formatDate } from "@/lib/utils";
 
 export const revalidate = 60;
@@ -37,16 +39,27 @@ export default async function ArticlePage({ params }: { params: { slug: string }
     () => undefined
   );
 
-  const { data: related } = await supabase
-    .from("articles")
-    .select(
-      "id, title, slug, excerpt, cover_image_url, published_at, category:categories(id, name, slug)"
-    )
-    .eq("status", "published")
-    .eq("category_id", article.category_id ?? "")
-    .neq("id", article.id)
-    .order("published_at", { ascending: false })
-    .limit(4);
+  const [{ data: related }, { count: likeCount }, { data: comments }] = await Promise.all([
+    supabase
+      .from("articles")
+      .select(
+        "id, title, slug, excerpt, cover_image_url, published_at, category:categories(id, name, slug)"
+      )
+      .eq("status", "published")
+      .eq("category_id", article.category_id ?? "")
+      .neq("id", article.id)
+      .order("published_at", { ascending: false })
+      .limit(4),
+    supabase
+      .from("article_likes")
+      .select("id", { count: "exact", head: true })
+      .eq("article_id", article.id),
+    supabase
+      .from("article_comments")
+      .select("id, article_id, name, content, created_at")
+      .eq("article_id", article.id)
+      .order("created_at", { ascending: false }),
+  ]);
 
   const paragraphs = article.content.split(/\n{2,}/).filter(Boolean);
 
@@ -70,6 +83,13 @@ export default async function ArticlePage({ params }: { params: { slug: string }
         )}
       </p>
 
+      <ArticleActions
+        articleId={article.id}
+        slug={article.slug}
+        title={article.title}
+        initialLikeCount={likeCount ?? 0}
+      />
+
       {article.cover_image_url && (
         <div className="relative mt-6 aspect-video w-full overflow-hidden rounded-xl">
           <Image
@@ -88,6 +108,11 @@ export default async function ArticlePage({ params }: { params: { slug: string }
           <p key={i}>{p}</p>
         ))}
       </div>
+
+      <ArticleComments
+        articleId={article.id}
+        initialComments={(comments ?? []) as ArticleComment[]}
+      />
 
       {related && related.length > 0 && (
         <div className="-mx-4">
