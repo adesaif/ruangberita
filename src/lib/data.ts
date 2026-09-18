@@ -41,7 +41,7 @@ export const getArticleBySlug = cache(async (slug: string) => {
   const { data } = await supabase
     .from("articles")
     .select(
-      "id, title, slug, excerpt, content, cover_image_url, published_at, category_id, category:categories(id, name, slug)"
+      "id, title, slug, excerpt, content, cover_image_url, published_at, category_id, author_name, category:categories(id, name, slug)"
     )
     .eq("slug", slug)
     .eq("status", "published")

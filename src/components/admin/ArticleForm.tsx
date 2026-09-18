@@ -20,7 +20,7 @@ export default function ArticleForm({ categories, subcategories, initialArticle 
   const [title, setTitle] = useState(initialArticle?.title ?? "");
   const [slug, setSlug] = useState(initialArticle?.slug ?? "");
   const [slugTouched, setSlugTouched] = useState(isEdit);
-  const [excerpt, setExcerpt] = useState(initialArticle?.excerpt ?? "");
+  const [authorName, setAuthorName] = useState(initialArticle?.author_name ?? "");
   const [content, setContent] = useState(initialArticle?.content ?? "");
   const [categoryId, setCategoryId] = useState(initialArticle?.category_id ?? "");
   const [subcategoryId, setSubcategoryId] = useState(initialArticle?.subcategory_id ?? "");
@@ -75,10 +75,15 @@ export default function ArticleForm({ categories, subcategories, initialArticle 
       data: { user },
     } = await supabase.auth.getUser();
 
+    const autoExcerpt = content
+      .replace(/\s+/g, " ")
+      .trim()
+      .slice(0, 160);
+
     const payload = {
       title,
       slug,
-      excerpt: excerpt || null,
+      excerpt: autoExcerpt ? `${autoExcerpt}${content.length > 160 ? "…" : ""}` : null,
       content,
       cover_image_url: coverUrl || null,
       category_id: categoryId || null,
@@ -87,6 +92,7 @@ export default function ArticleForm({ categories, subcategories, initialArticle 
       is_featured: isFeatured,
       is_popular: isPopular,
       author_id: user?.id ?? null,
+      author_name: authorName.trim() || null,
     };
 
     const result = isEdit
@@ -134,11 +140,13 @@ export default function ArticleForm({ categories, subcategories, initialArticle 
       </div>
 
       <div>
-        <label className="mb-1 block text-xs font-medium text-ink-muted">Ringkasan</label>
-        <textarea
-          value={excerpt}
-          onChange={(e) => setExcerpt(e.target.value)}
-          rows={2}
+        <label className="mb-1 block text-xs font-medium text-ink-muted">
+          Nama Penulis/Pengedit
+        </label>
+        <input
+          value={authorName}
+          onChange={(e) => setAuthorName(e.target.value)}
+          placeholder="contoh: Ibnu Naufal"
           className="w-full rounded-lg border border-ink/10 bg-surface-alt px-3 py-2 text-sm text-ink outline-none focus:border-brand"
         />
       </div>

@@ -25,6 +25,7 @@ export type Article = {
   category_id: string | null;
   subcategory_id: string | null;
   author_id: string | null;
+  author_name: string | null;
   status: ArticleStatus;
   is_featured: boolean;
   is_popular: boolean;

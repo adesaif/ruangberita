@@ -60,7 +60,15 @@ export default async function ArticlePage({ params }: { params: { slug: string }
       <h1 className="mt-3 text-2xl font-bold leading-snug text-ink md:text-3xl">
         {article.title}
       </h1>
-      <p className="mt-2 text-sm text-ink-muted">{formatDate(article.published_at)}</p>
+      <p className="mt-2 text-sm text-ink-muted">
+        {formatDate(article.published_at)}
+        {article.author_name && (
+          <>
+            {" · "}
+            Oleh <span className="font-medium text-ink">{article.author_name}</span>
+          </>
+        )}
+      </p>
 
       {article.cover_image_url && (
         <div className="relative mt-6 aspect-video w-full overflow-hidden rounded-xl">
