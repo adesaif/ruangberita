@@ -1,6 +1,18 @@
 import Link from "next/link";
 import type { Category } from "@/lib/types";
 
+const INFORMASI = [
+  { label: "Tentang Kami", href: "/tentang-kami" },
+  { label: "Pedoman Media Siber", href: "/pedoman-media-siber" },
+  { label: "Redaksi", href: "/redaksi" },
+  { label: "Kontak", href: "/kontak" },
+  { label: "Pasang Iklan", href: "/pasang-iklan" },
+  { label: "Karir", href: "/karir" },
+  { label: "Info Iklan", href: "/info-iklan" },
+  { label: "Disclaimer", href: "/disclaimer" },
+  { label: "Kebijakan & Privasi", href: "/kebijakan-privasi" },
+];
+
 const SOCIALS = [
   {
     label: "Instagram",
@@ -49,7 +61,7 @@ const SOCIALS = [
 export default function Footer({ categories }: { categories: Category[] }) {
   return (
     <footer className="mt-16 border-t border-ink/10 bg-surface-alt">
-      <div className="mx-auto grid max-w-6xl gap-8 px-4 py-10 md:grid-cols-3">
+      <div className="mx-auto grid max-w-6xl gap-8 px-4 py-10 sm:grid-cols-2 md:grid-cols-4">
         <div>
           <span className="font-serif text-lg font-bold text-ink">RUANG BERITA</span>
           <p className="mt-2 max-w-xs text-sm text-ink-muted">
@@ -68,6 +80,22 @@ export default function Footer({ categories }: { categories: Category[] }) {
                   className="text-sm text-ink-muted transition duration-200 hover:text-brand"
                 >
                   {c.name}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div>
+          <h3 className="mb-3 text-sm font-semibold text-ink">Informasi</h3>
+          <ul className="flex flex-col gap-2">
+            {INFORMASI.map((item) => (
+              <li key={item.href}>
+                <Link
+                  href={item.href}
+                  className="text-sm text-ink-muted transition duration-200 hover:text-brand"
+                >
+                  {item.label}
                 </Link>
               </li>
             ))}
