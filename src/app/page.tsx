@@ -45,12 +45,13 @@ export default async function HomePage() {
       <NewsGrid
         title="Berita Terbaru"
         articles={(latest ?? []) as unknown as Article[]}
-        viewAllHref="/kategori/nasional"
+        viewAllHref="/berita-terbaru"
       />
 
       <NewsGrid
         title="Berita Populer"
         articles={(popular ?? []) as unknown as Article[]}
+        viewAllHref="/berita-populer"
       />
     </>
   );
