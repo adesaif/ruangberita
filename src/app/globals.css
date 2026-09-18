@@ -16,8 +16,10 @@
 }
 
 .dark {
-  --color-surface: #0f1013;
-  --color-surface-alt: #1a1b1f;
+  /* Sengaja dibuat sedikit "hangat" (bukan abu-abu netral) supaya senada
+     dengan warna brand terakota, bukan dark mode generik. */
+  --color-surface: #121011;
+  --color-surface-alt: #1d1a19;
   --color-ink: #f2f2f3;
   --color-ink-muted: #a5a7ad;
 }
@@ -29,6 +31,11 @@ html {
 body {
   background-color: var(--color-surface);
   color: var(--color-ink);
+}
+
+.dark body {
+  background-image: radial-gradient(1100px 550px at 50% -12%, rgba(173, 61, 21, 0.1), transparent 60%);
+  background-repeat: no-repeat;
 }
 
 * {

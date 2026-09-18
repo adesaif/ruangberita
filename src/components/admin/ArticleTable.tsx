@@ -53,8 +53,8 @@ export default function ArticleTable({ articles }: { articles: Article[] }) {
                   disabled={busyId === a.id}
                   className={`rounded-full px-2.5 py-1 text-[11px] font-semibold ${
                     a.status === "published"
-                      ? "bg-green-500/10 text-green-600"
-                      : "bg-yellow-500/10 text-yellow-600"
+                      ? "bg-green-500/10 text-green-600 dark:bg-green-500/15 dark:text-green-400"
+                      : "bg-yellow-500/10 text-yellow-600 dark:bg-yellow-500/15 dark:text-yellow-400"
                   }`}
                 >
                   {a.status === "published" ? "Published" : "Draft"}
@@ -72,7 +72,7 @@ export default function ArticleTable({ articles }: { articles: Article[] }) {
                   <button
                     onClick={() => remove(a)}
                     disabled={busyId === a.id}
-                    className="text-xs font-medium text-red-600 hover:underline"
+                    className="text-xs font-medium text-red-600 hover:underline dark:text-red-400"
                   >
                     Hapus
                   </button>

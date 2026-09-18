@@ -7,7 +7,7 @@ export default function NewsCard({ article }: { article: Article }) {
   return (
     <Link
       href={`/berita/${article.slug}`}
-      className="group flex flex-col overflow-hidden rounded-xl border border-ink/10 bg-surface transition duration-200 hover:-translate-y-0.5 hover:shadow-lg"
+      className="group flex flex-col overflow-hidden rounded-xl border border-ink/10 bg-surface transition duration-200 hover:-translate-y-0.5 hover:shadow-lg dark:bg-surface-alt dark:hover:shadow-none dark:hover:ring-1 dark:hover:ring-white/10"
     >
       <div className="relative aspect-[16/10] w-full overflow-hidden bg-surface-alt">
         {article.cover_image_url ? (

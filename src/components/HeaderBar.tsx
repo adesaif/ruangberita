@@ -150,7 +150,7 @@ export default function HeaderBar({
                     }`}
                   >
                     <div className="overflow-hidden">
-                      <div className="flex min-w-[11rem] flex-col gap-0.5 rounded-xl border border-ink/10 bg-surface p-1.5 shadow-lg">
+                      <div className="flex min-w-[11rem] flex-col gap-0.5 rounded-xl border border-ink/10 bg-surface p-1.5 shadow-lg dark:bg-surface-alt dark:shadow-black/40 dark:ring-1 dark:ring-white/10">
                         {subs.map((s) => (
                           <Link
                             key={s.id}
@@ -200,7 +200,7 @@ export default function HeaderBar({
                 }`}
               >
                 <div className="overflow-hidden">
-                  <div className="flex min-w-[11rem] flex-col gap-0.5 rounded-xl border border-ink/10 bg-surface p-1.5 shadow-lg">
+                  <div className="flex min-w-[11rem] flex-col gap-0.5 rounded-xl border border-ink/10 bg-surface p-1.5 shadow-lg dark:bg-surface-alt dark:shadow-black/40 dark:ring-1 dark:ring-white/10">
                     {overflowCategories.map((c) => (
                       <Link
                         key={c.id}

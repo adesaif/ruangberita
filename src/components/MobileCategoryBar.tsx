@@ -79,7 +79,7 @@ export default function MobileCategoryBar({
                 }`}
               >
                 <div className="overflow-hidden">
-                  <div className="mt-1 flex flex-col gap-0.5 rounded-xl border border-ink/10 bg-surface p-1.5 shadow-lg">
+                  <div className="mt-1 flex flex-col gap-0.5 rounded-xl border border-ink/10 bg-surface p-1.5 shadow-lg dark:bg-surface-alt dark:shadow-black/40 dark:ring-1 dark:ring-white/10">
                     {subs.map((s) => (
                       <Link
                         key={s.id}

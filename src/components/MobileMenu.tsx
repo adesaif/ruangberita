@@ -40,7 +40,7 @@ export default function MobileMenu({
       </button>
 
       <div
-        className={`fixed inset-x-0 top-16 z-40 overflow-hidden border-b border-ink/10 bg-surface shadow-lg transition-all duration-300 ease-out ${
+        className={`fixed inset-x-0 top-16 z-40 overflow-hidden border-b border-ink/10 bg-surface shadow-lg dark:bg-surface-alt dark:shadow-black/40 transition-all duration-300 ease-out ${
           open ? "max-h-[80vh] opacity-100" : "max-h-0 opacity-0"
         }`}
       >

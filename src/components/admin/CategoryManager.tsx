@@ -126,7 +126,7 @@ export default function CategoryManager({
 
   return (
     <div className="flex flex-col gap-6">
-      {error && <p className="rounded-lg bg-red-500/10 px-3 py-2 text-sm text-red-600">{error}</p>}
+      {error && <p className="rounded-lg bg-red-500/10 px-3 py-2 text-sm text-red-600 dark:bg-red-500/15 dark:text-red-400">{error}</p>}
 
       <form onSubmit={addCategory} className="flex gap-2">
         <input
@@ -180,7 +180,7 @@ export default function CategoryManager({
                     </button>
                     <button
                       onClick={() => deleteCategory(c.id)}
-                      className="text-xs font-medium text-red-600 hover:underline"
+                      className="text-xs font-medium text-red-600 hover:underline dark:text-red-400"
                     >
                       Hapus kategori
                     </button>
@@ -234,7 +234,7 @@ export default function CategoryManager({
                       </button>
                       <button
                         onClick={() => deleteSubcategory(s.id)}
-                        className="text-red-500"
+                        className="text-red-500 dark:text-red-400"
                         aria-label={`Hapus ${s.name}`}
                       >
                         ×

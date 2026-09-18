@@ -113,7 +113,7 @@ export default function ArticleForm({ categories, subcategories, initialArticle 
   return (
     <form onSubmit={onSubmit} className="flex flex-col gap-5">
       {error && (
-        <p className="rounded-lg bg-red-500/10 px-3 py-2 text-sm text-red-600">{error}</p>
+        <p className="rounded-lg bg-red-500/10 px-3 py-2 text-sm text-red-600 dark:bg-red-500/15 dark:text-red-400">{error}</p>
       )}
 
       <div>

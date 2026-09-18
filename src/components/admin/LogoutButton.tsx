@@ -17,7 +17,7 @@ export default function LogoutButton() {
     <button
       type="button"
       onClick={logout}
-      className="w-full rounded-lg px-3 py-2 text-left text-sm font-medium text-red-600 transition duration-200 hover:bg-red-500/10"
+      className="w-full rounded-lg px-3 py-2 text-left text-sm font-medium text-red-600 transition duration-200 hover:bg-red-500/10 dark:text-red-400 dark:hover:bg-red-500/15"
     >
       Keluar
     </button>
