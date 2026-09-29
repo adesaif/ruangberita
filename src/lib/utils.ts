@@ -9,6 +9,10 @@ export function formatDate(dateString: string | null): string {
   }).format(new Date(dateString));
 }
 
+export function formatCompactNumber(value: number): string {
+  return new Intl.NumberFormat("id-ID", { notation: "compact" }).format(value);
+}
+
 export function slugify(input: string): string {
   return input
     .toLowerCase()

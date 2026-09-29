@@ -3,15 +3,23 @@
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { getVisitorId, isFavorite, toggleFavorite } from "@/lib/visitor";
+import { formatCompactNumber } from "@/lib/utils";
 
 type Props = {
   articleId: string;
   slug: string;
   title: string;
   initialLikeCount: number;
+  initialViewCount: number;
 };
 
-export default function ArticleActions({ articleId, slug, title, initialLikeCount }: Props) {
+export default function ArticleActions({
+  articleId,
+  slug,
+  title,
+  initialLikeCount,
+  initialViewCount,
+}: Props) {
   const [liked, setLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(initialLikeCount);
   const [favorited, setFavorited] = useState(false);
@@ -189,6 +197,21 @@ export default function ArticleActions({ articleId, slug, title, initialLikeCoun
         </svg>
         Bagikan
       </button>
+
+      <span
+        title="Jumlah dilihat"
+        className="flex items-center gap-1.5 rounded-full border border-ink/10 px-4 py-2 text-sm font-medium text-ink-muted"
+      >
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"
+          />
+          <circle cx="12" cy="12" r="3" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+        {formatCompactNumber(initialViewCount)}
+      </span>
 
       {shareNotice && (
         <span className="absolute -bottom-6 left-0 text-xs text-ink-muted">{shareNotice}</span>

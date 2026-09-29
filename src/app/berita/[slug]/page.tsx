@@ -132,6 +132,7 @@ export default async function ArticlePage({ params }: { params: { slug: string }
         slug={article.slug}
         title={article.title}
         initialLikeCount={likeCount ?? 0}
+        initialViewCount={(article.view_count ?? 0) + 1}
       />
 
       {article.cover_image_url && (
